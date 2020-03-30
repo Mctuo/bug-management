@@ -34,9 +34,10 @@ var(
 	MyDbHost             string
 	MyDbPort             string
 	MyDbName			 string
-	MyUserTb			string
+	MyUserTb			 string
+	MyProjectTb  		 string
 	//url
-	IsLoginAddr string
+	IsLoginAddr 		 string
 )
 
 
@@ -57,6 +58,10 @@ func init(){
 	if MyDbUser = beego.AppConfig.String("mysql::mydbuser"); MyDbUser == "" {
 		fmt.Println("MyDbUser path is not set , default is ", MyDbUser)
 		panic("MyDbUser is not set , default is null")
+	}
+
+	if MyProjectTb = beego.AppConfig.String("mysql::myprojecttb");MyProjectTb ==""{
+		panic("MyProjectTb is not set,default is null")
 	}
 
 	if MyDbPwd = beego.AppConfig.String("mysql::mydbpwd"); MyDbPwd == "" {
@@ -111,7 +116,7 @@ func init(){
 
 	if RsPwd = strings.TrimSpace(beego.AppConfig.String("redis::rspassword")); RsPwd == "" {
 		RsPwd = ""
-		panic("RsPwd is not set , default is null")
+		fmt.Println("RsPwd is not set , default is null")
 	}
 
 	if RsExpire, err = beego.AppConfig.Int("redis::rsexpire"); err != nil || RsExpire < 0 {

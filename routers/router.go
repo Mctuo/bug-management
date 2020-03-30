@@ -2,6 +2,7 @@ package routers
 
 import (
 	"bug-management/controllers/health"
+	"bug-management/controllers/project"
 	"bug-management/controllers/user"
 	"github.com/astaxie/beego/plugins/cors"
 	sso"bug-management/filter"
@@ -33,5 +34,5 @@ func init() {
 
 	beego.Router("/bug/api/getuserlist",&user.PersonController{},"GET:GetUserList")
 
-
+	beego.Router("/bug/api/project/create",&project.ProjectController{},"POST:CreateProject")
 }

@@ -28,7 +28,7 @@ create table `project`(
 create table `project_people`(
      `id` int AUTO_INCREMENT comment '项目编号',
      `member_num` int comment '小组成员账号',
-      primary key (`id`),
+      primary key (`id`)
 )engine=innodb,charset=utf8mb4;
 
 
