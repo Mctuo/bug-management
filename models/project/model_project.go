@@ -18,6 +18,17 @@ var (
 	}
 )
 
+var(
+	projectinfo =[]string{
+		"project_name",
+		"account",
+		"project_people",
+		"task_total",
+		"task_unfinished",
+		"task_finished",
+	}
+)
+
 type StruCreateProjectReq struct {
 	ProjectName string `json:"project_name"`
 	Account int64	`json:"account"`
@@ -43,6 +54,16 @@ func CreateProject(myReq StruCreateProjectReq)error{
 	err := database.Insert(conf.MyProjectTb,ProjectInfo,myReq.ProjectName,myReq.Account,0,0,0,0)
 	if err != nil{
 		Error("CreateProject database.Insert error:",err.Error())
+		return err
+	}
+	return nil
+}
+
+func ProjectList(account int64,myResp *StruProject)error{
+	err :=database.Query(conf.MyProjectTb,"account",account,projectinfo,&myResp.ProjectName,
+		&myResp.Account,&myResp.ProjectPeople,&myResp.TotalTask,&myResp.TaskUnFinished,&myResp.TaskFinished)
+	if err != nil{
+		Error("models ProjectList database.Query error:",err.Error())
 		return err
 	}
 	return nil

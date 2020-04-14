@@ -54,8 +54,6 @@ func SetUserInfo2DB(myReq StruPersonInfoReq)error{
 }
 
 func GetUserInfo(account int64, resp *StruPersonInfoReq)error{
-
-
 	err := database.Query(conf.MyUserTb,"account",account,StruUserInfo,
 		&resp.Name,&resp.Account,&resp.Mail,&resp.Job,&resp.Note,&resp.Avatar)
 	if err != nil{

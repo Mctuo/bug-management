@@ -35,4 +35,6 @@ func init() {
 	beego.Router("/bug/api/getuserlist",&user.PersonController{},"GET:GetUserList")
 
 	beego.Router("/bug/api/project/create",&project.ProjectController{},"POST:CreateProject")
+
+	beego.Router("/bug/api/project/list",&project.ProjectController{},"GET:ProjectList")
 }

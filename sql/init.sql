@@ -77,3 +77,4 @@ create table `bug_solution`(
     `Solution` varchar(200) comment '解决方案',
     primary key (`id`)
 )engine=innodb,charset=utf8mb4;
+

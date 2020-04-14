@@ -12,6 +12,27 @@ type ProjectController struct {
 	beego.Controller
 }
 
+func (c *ProjectController)ProjectList(){
+	models.PrintClientInfo(c.Ctx)
+
+	myAccount,err := c.GetInt64("account")
+	if err != nil{
+		Error("PersonController ProjectList myAccount error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	var myResp pro.StruProject
+	err = pro.ProjectList(myAccount,&myResp)
+	if err != nil{
+		Error("PersonController project.ProjectList error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),myResp,c.Ctx)
+	return
+}
+
+
 func (c *ProjectController)CreateProject(){
 	models.PrintClientInfo(c.Ctx)
 

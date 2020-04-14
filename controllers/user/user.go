@@ -18,6 +18,7 @@ var(
 	myAddr = "123.56.25.57/"
 )
 
+
 func(c *PersonController)UploadAvatar(){
 	f,h,err:=c.GetFile("file")
 	if err != nil{
@@ -27,7 +28,6 @@ func(c *PersonController)UploadAvatar(){
 	}
 	defer f.Close()
 	myFileName := fmt.Sprintf("%d-%s",time.Now().UnixNano()/1e6,h.Filename)
-
 
 	err = c.SaveToFile("file","/usr/share/nginx/static/img/"+myFileName)
 	if err != nil{
