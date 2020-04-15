@@ -19,6 +19,7 @@ var(
 )
 
 
+
 func(c *PersonController)UploadAvatar(){
 	f,h,err:=c.GetFile("file")
 	if err != nil{
@@ -76,7 +77,7 @@ func (c *PersonController)GetUserInfo(){
 	}
 	if myAccount <=0{
 		Error("PersonController GetUserInfo account=",myAccount)
-		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"非法参数"),nil,c.Ctx)
 		return
 	}
 	var myResp user.StruPersonInfoReq
@@ -92,6 +93,80 @@ func (c *PersonController)GetUserInfo(){
 
 func(c *PersonController)GetUserList(){
 	models.PrintClientInfo(c.Ctx)
+	myProjectId ,err := c.GetInt64("projectId")
+	if err != nil{
+		Error("PersonController GetUserInfo account=",myProjectId)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	if myProjectId <=0{
+		Error("PersonController GetUserInfo account=",myProjectId)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"非法参数"),nil,c.Ctx)
+		return
+	}
 
+	var myResp user.StruPersonInfoResp
+	err = user.GetUserList(myProjectId,&myResp)
+	if err != nil{
+		Error("PersonController AddUser error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),myResp.Info,c.Ctx)
+	return
+}
 
+func (c *PersonController)AddUser(){
+	models.PrintClientInfo(c.Ctx)
+
+	var myReq user.StruAddUserReq
+	err := json.Unmarshal(c.Ctx.Input.RequestBody,&myReq)
+	if err != nil{
+		Error("PersonController SetUserInfo json.Unmarshal error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+
+	for _,v := range myReq.Account{
+		if v <= 0{
+			Error("PersonController AddUser account error,account=",v)
+			models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"非法参数"),nil,c.Ctx)
+			return
+		}
+	}
+	err = user.AddUser(myReq)
+	if err != nil{
+		Error("PersonController AddUser error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),"ok",c.Ctx)
+	return
+}
+
+func (c *PersonController)DeleteUser(){
+	models.PrintClientInfo(c.Ctx)
+
+	var myReq user.StruAddUserReq
+	err := json.Unmarshal(c.Ctx.Input.RequestBody,&myReq)
+	if err != nil{
+		Error("PersonController SetUserInfo json.Unmarshal error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	for _,v := range myReq.Account{
+		if v <= 0{
+			Error("PersonController AddUser account error,account=",v)
+			models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"非法参数"),nil,c.Ctx)
+			return
+		}
+	}
+	err = user.DeleteUser(myReq)
+	if err != nil{
+		Error("PersonController AddUser error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),"ok",c.Ctx)
+	return
 }

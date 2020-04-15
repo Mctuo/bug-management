@@ -36,6 +36,7 @@ var(
 	MyDbName			 string
 	MyUserTb			 string
 	MyProjectTb  		 string
+	MyProjectPeople		 string
 	//url
 	IsLoginAddr 		 string
 )
@@ -43,6 +44,10 @@ var(
 
 func init(){
 	var err error
+
+	if MyProjectPeople = beego.AppConfig.String("mysql::myprojectPeople");MyProjectPeople ==""{
+		panic("MyProjectPeople is null")
+	}
 
 	if MyUserTb = beego.AppConfig.String("mysql::myusertb");MyUserTb == ""{
 		panic("MyUserTb is null")

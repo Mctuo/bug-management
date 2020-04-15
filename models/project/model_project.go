@@ -51,7 +51,7 @@ func CreateProject(myReq StruCreateProjectReq)error{
 		return errors.New("项目已创建，不能重复创建")
 	}
 
-	err := database.Insert(conf.MyProjectTb,ProjectInfo,myReq.ProjectName,myReq.Account,0,0,0,0)
+	err := database.Insert(conf.MyProjectTb,ProjectInfo,myReq.ProjectName,myReq.Account,1,0,0,0)
 	if err != nil{
 		Error("CreateProject database.Insert error:",err.Error())
 		return err
