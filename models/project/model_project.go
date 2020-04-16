@@ -43,6 +43,9 @@ type StruProject struct {
 	TaskUnFinished int	`json:"task_unfinished"`
 }
 
+type StruProjectListResp struct {
+	ListInfo []StruProject `json:"listInfo"`
+}
 
 
 func CreateProject(myReq StruCreateProjectReq)error{
@@ -59,12 +62,22 @@ func CreateProject(myReq StruCreateProjectReq)error{
 	return nil
 }
 
-func ProjectList(account int64,myResp *StruProject)error{
-	err :=database.Query(conf.MyProjectTb,"account",account,projectinfo,&myResp.ProjectName,
-		&myResp.Account,&myResp.ProjectPeople,&myResp.TotalTask,&myResp.TaskUnFinished,&myResp.TaskFinished)
+func ProjectList(account int64,myResp *StruProjectListResp)error{
+	var tmp StruProject
+
+	rows,err :=database.GetDB().Query("select *from project where account =?",account)
 	if err != nil{
-		Error("models ProjectList database.Query error:",err.Error())
+		Error("ProjectList database.GetDB().Query error:",err.Error())
 		return err
+	}
+	var id int
+	for rows.Next(){
+		err = rows.Scan(&id,&tmp.ProjectName,&tmp.Account,&tmp.ProjectPeople,&tmp.TotalTask,&tmp.TaskUnFinished,&tmp.TaskFinished)
+		if err != nil{
+			Error("ProjectList rows.Scan error:",err.Error())
+			return err
+		}
+		myResp.ListInfo = append(myResp.ListInfo,tmp)
 	}
 	return nil
 }
