@@ -1,6 +1,7 @@
 package user
 
 import (
+	"bug-management/conf"
 	"bug-management/models"
 	user "bug-management/models/user"
 	. "common/logs"
@@ -30,7 +31,7 @@ func(c *PersonController)UploadAvatar(){
 	defer f.Close()
 	myFileName := fmt.Sprintf("%d-%s",time.Now().UnixNano()/1e6,h.Filename)
 
-	err = c.SaveToFile("file","/usr/share/nginx/static/img/"+myFileName)
+	err = c.SaveToFile("file",conf.SvrPath+myFileName)
 	if err != nil{
 		Error("PersonController UploadAvatar error:",err.Error())
 		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)

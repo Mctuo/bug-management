@@ -1,6 +1,7 @@
 package routers
 
 import (
+	_case "bug-management/controllers/case"
 	"bug-management/controllers/health"
 	"bug-management/controllers/project"
 	"bug-management/controllers/user"
@@ -25,7 +26,7 @@ func init() {
     beego.Router("/health", &health.HealthController{},"GET:Health")
 
     beego.Router("/bug/api/getnowtimes",&health.HealthController{},"GET:GetNowTimes")
-
+	//1.用户user
 	beego.Router("/bug/api/uploadavator",&user.PersonController{},"POST:UploadAvatar")
 
     beego.Router("/bug/api/setusrinfo",&user.PersonController{},"POST:SetUserInfo")
@@ -34,11 +35,21 @@ func init() {
 
 	beego.Router("/bug/api/getuserlist",&user.PersonController{},"GET:GetUserList")
 
+	beego.Router("/bug/api/user/add",&user.PersonController{},"POST:AddUser")
+
+	beego.Router("/bug/api/user/delete",&user.PersonController{},"POST:DeleteUser")
+
+	//2.项目project
 	beego.Router("/bug/api/project/create",&project.ProjectController{},"POST:CreateProject")
 
 	beego.Router("/bug/api/project/list",&project.ProjectController{},"GET:ProjectList")
 
-	beego.Router("/bug/api/user/add",&user.PersonController{},"POST:AddUser")
+	beego.Router("/bug/api/project/info",&project.ProjectController{},"GET:ProjectInfo")
 
-	beego.Router("/bug/api/user/delete",&user.PersonController{},"POST:DeleteUser")
+	beego.Router("/bug/api/project/delete",&project.ProjectController{},"POST:DeleteProject")
+
+	//3.用例case
+	beego.Router("/bug/api/case/create",&_case.CaseController{},"POST:CreateCase")
+
+	beego.Router("bug/api/case/assign/list",&_case.CaseController{},"GET:AssignList")
 }

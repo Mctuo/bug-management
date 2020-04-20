@@ -29,21 +29,33 @@ var(
 	HttpClientOn 	 int
 
 	//mysql
-	MyDbUser             string
-	MyDbPwd              string
-	MyDbHost             string
-	MyDbPort             string
-	MyDbName			 string
-	MyUserTb			 string
-	MyProjectTb  		 string
-	MyProjectPeople		 string
+	MyDbUser        string
+	MyDbPwd         string
+	MyDbHost        string
+	MyDbPort        string
+	MyDbName        string
+	MyUserTb        string
+	MyProjectTb     string
+	MyProjectPeople string
+	MyCaseTb        string
 	//url
 	IsLoginAddr 		 string
+
+	//picture
+	SvrPath 	string
 )
 
 
 func init(){
 	var err error
+
+	if SvrPath = beego.AppConfig.String("picture::svrpath");SvrPath == ""{
+		fmt.Println("SvrPath is not set !!!")
+	}
+
+	if MyCaseTb = beego.AppConfig.String("mysql::mycasetb"); MyCaseTb == ""{
+		fmt.Println("myCaseTb is not set")
+	}
 
 	if MyProjectPeople = beego.AppConfig.String("mysql::myprojectPeople");MyProjectPeople ==""{
 		panic("MyProjectPeople is null")

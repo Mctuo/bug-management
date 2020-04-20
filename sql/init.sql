@@ -21,19 +21,21 @@ create table `project`(
     `task_total` int comment '项目总任务数',
     `task_unfinished` int comment '尚未完成的任务数',
     `task_finished` int comment '已经完成的任务数',
+    `creater` int comment '创建人Id',
     primary key (`id`),
 	index  (`account`)
 )engine=innodb,charset=utf8mb4;
 
 create table `project_people`(
      `id` int AUTO_INCREMENT comment '项目编号',
-     `member_num` int comment '小组成员账号',
+     `account` int comment '小组成员账号',
      index  (`id`)
 )engine=innodb,charset=utf8mb4;
 
 
 create table `test_case`(
     `id` int AUTO_INCREMENT comment '测试用例Id',
+    `projectId` int unique comment '项目Id',
     `title` varchar(30) comment '测试用例标题',
     `module_path` varchar(30) comment '被测试对象模块路径',
     `assign` bigint(12) comment '指派给测试人员',
@@ -48,6 +50,7 @@ create table `test_case`(
 
 create table `test_result`(
      `id` int AUTO_INCREMENT comment '测试用例Id',
+     `projectId` int unique comment '项目Id',
      `status` varchar(10) comment '状态',
      `assigned` bigint(12) comment '指派给开发人员',
      `test_env` varchar(30) comment '测试运行环境',

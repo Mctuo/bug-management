@@ -103,7 +103,7 @@ func AddUser(myReq StruAddUserReq)error{
 	if !isExist{
 		return errors.New("项目不存在")
 	}
-	insertSql, err := database.GetDB().Prepare(`insert into project_people(id,member_num)values(?,?)`)
+	insertSql, err := database.GetDB().Prepare(`insert into project_people(id,account)values(?,?)`)
 	if err != nil{
 		Error("AddUser database.GetDB().Prepare error:",err.Error())
 		return err
@@ -142,7 +142,7 @@ func DeleteUser(myReq StruAddUserReq)error{
 	if !isExist{
 		return errors.New("项目不存在")
 	}
-	deleteSql,err := database.GetDB().Prepare("delete from project_people where id=? and member_num=?")
+	deleteSql,err := database.GetDB().Prepare("delete from project_people where id=? and account=?")
 	if err != nil{
 		Error("DeleteUser database.GetDB().Prepare error:",err.Error())
 		return err

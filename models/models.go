@@ -18,6 +18,7 @@ const(
 	Success = 0
 	ErrArg = 2000
 	ErrSvr = 5000
+	ErrPerson = 2001
 )
 
 func GetErrMsg(errcode int, key string) string {
@@ -30,6 +31,9 @@ func GetErrMsg(errcode int, key string) string {
 
 	case ErrSvr:
 		return fmt.Sprintf("服务器内部错误:%s",key)
+
+	case ErrPerson:
+		return fmt.Sprintf("非法操作:%s",key)
 	}
 	return key
 }
