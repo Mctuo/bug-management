@@ -28,6 +28,7 @@ type StruDeleteProjectReq struct {
 type StruCreateProjectReq struct {
 	ProjectName string `json:"project_name"`
 	Account int64	`json:"account"`
+	Creater int64	`json:"creater"`
 }
 
 type StruProject struct {
@@ -102,9 +103,9 @@ func ProjectList(account int64,myResp *StruProjectListResp)error{
 		return err
 	}
 	defer rows.Close()
-	var temp int
+
 	for rows.Next(){
-		err = rows.Scan(&tmp.ProjectId,&tmp.ProjectName,&tmp.Account,&tmp.ProjectPeople,&tmp.TotalTask,&tmp.TaskUnFinished,&tmp.TaskFinished,&temp)
+		err = rows.Scan(&tmp.ProjectId,&tmp.ProjectName,&tmp.Account,&tmp.ProjectPeople,&tmp.TotalTask,&tmp.TaskUnFinished,&tmp.TaskFinished,&tmp.Creater)
 		if err != nil{
 			Error("ProjectList rows.Scan error:",err.Error())
 			return err

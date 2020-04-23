@@ -96,6 +96,11 @@ func (c *ProjectController)CreateProject(){
 		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"项目名称为空"),nil,c.Ctx)
 		return
 	}
+	if myReq.Creater < 1{
+		Error("ProjectController CreateProject myReq.Creater =",myReq.Creater)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"创建人错误"),nil,c.Ctx)
+		return
+	}
 	err = pro.CreateProject(myReq)
 	if err != nil{
 		Error("ProjectController CreateProject pro.CreateProject error:",err.Error())

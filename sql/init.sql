@@ -3,7 +3,7 @@ use bug_management
 create table `person_info`(
     `id` int AUTO_INCREMENT,
     `name` varchar(10) ,
-    `account` bigint(12) unique not null,
+    `account` bigint(12)  not null,
     `mail` varchar(20),
     `job` varchar(30) ,
     `note` varchar(30),
@@ -16,7 +16,7 @@ create table `person_info`(
 create table `project`(
     `id` int AUTO_INCREMENT comment '项目编号',
     `project_name` varchar(30) comment '项目名称',
-    `account` bigint(12) unique not null comment '项目创建人',
+    `account` bigint(12)  not null comment '项目创建人',
     `project_people` int comment '项目人数',
     `task_total` int comment '项目总任务数',
     `task_unfinished` int comment '尚未完成的任务数',
@@ -35,7 +35,7 @@ create table `project_people`(
 
 create table `test_case`(
     `id` int AUTO_INCREMENT comment '测试用例Id',
-    `projectId` int unique comment '项目Id',
+    `projectId` int  comment '项目Id',
     `title` varchar(30) comment '测试用例标题',
     `module_path` varchar(30) comment '被测试对象模块路径',
     `assign` bigint(12) comment '指派给测试人员',
@@ -50,7 +50,8 @@ create table `test_case`(
 
 create table `test_result`(
      `id` int AUTO_INCREMENT comment '测试用例Id',
-     `projectId` int unique comment '项目Id',
+     `case_id` int unique comment 'case_id',
+     `projectId` int  comment '项目Id',
      `status` varchar(10) comment '状态',
      `assigned` bigint(12) comment '指派给开发人员',
      `test_env` varchar(30) comment '测试运行环境',

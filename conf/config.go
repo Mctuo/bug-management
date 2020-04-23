@@ -38,6 +38,7 @@ var(
 	MyProjectTb     string
 	MyProjectPeople string
 	MyCaseTb        string
+	MyResultTb		string
 	//url
 	IsLoginAddr 		 string
 
@@ -51,6 +52,10 @@ func init(){
 
 	if SvrPath = beego.AppConfig.String("picture::svrpath");SvrPath == ""{
 		fmt.Println("SvrPath is not set !!!")
+	}
+
+	if MyResultTb = beego.AppConfig.String("mysql::myresulttb"); MyResultTb == ""{
+		fmt.Println("MyResultTb is not set!")
 	}
 
 	if MyCaseTb = beego.AppConfig.String("mysql::mycasetb"); MyCaseTb == ""{

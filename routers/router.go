@@ -4,6 +4,7 @@ import (
 	_case "bug-management/controllers/case"
 	"bug-management/controllers/health"
 	"bug-management/controllers/project"
+	"bug-management/controllers/result"
 	"bug-management/controllers/user"
 	"github.com/astaxie/beego/plugins/cors"
 	sso"bug-management/filter"
@@ -52,4 +53,10 @@ func init() {
 	beego.Router("/bug/api/case/create",&_case.CaseController{},"POST:CreateCase")
 
 	beego.Router("bug/api/case/assign/list",&_case.CaseController{},"GET:AssignList")
+
+	beego.Router("/bug/api/result/create",&result.ResultController{},"POST:CreateResult")
+
+	beego.Router("/bug/api/result/list",&result.ResultController{},"GET:ResultList")
+
+
 }
