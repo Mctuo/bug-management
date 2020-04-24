@@ -54,25 +54,51 @@ func (c *ResultController)CreateResult(){
 func (c *ResultController)ResultList(){
 	models.PrintClientInfo(c.Ctx)
 
-	//myProjectId,err := c.GetInt64("projectId")
-	//if err != nil{
-	//	Error("ResultController ResultList myProjectId error:",err.Error())
-	//	models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
-	//	return
-	//}
-	//if myProjectId < 1 {
-	//	Error("ResultController ResultList myProjectId=",myProjectId)
-	//	models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"myProjectId error"),nil,c.Ctx)
-	//	return
-	//}
+	myAssign,err := c.GetInt64("assign")
+	if err != nil{
+		Error("ResultController ResultList myAssign error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	if myAssign < 1 {
+		Error("ResultController ResultList myAssign=",myAssign)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"myAssign error"),nil,c.Ctx)
+		return
+	}
 	var myResp result.StruResultListResp
 
-	err := result.ResultList(&myResp)
+	err = result.ResultList(myAssign,&myResp)
 	if err != nil{
 		Error("ResultController ResultList  result.ResultList error:",err.Error())
-		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
 		return
 	}
 	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),myResp.Info,c.Ctx)
+	return
+}
+
+func (c *ResultController)ResultListByCaseId(){
+	models.PrintClientInfo(c.Ctx)
+
+	myCaseId ,err := c.GetInt64("caseId")
+	if err != nil{
+		Error("ResultListByCaseId myCaseId error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	if myCaseId < 1{
+		Error("ResultListByCaseId myCaseId error,myCaseId=",myCaseId)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"caseId error"),nil,c.Ctx)
+		return
+	}
+
+	var myResp result.StruResultResp
+	err = result.ResultByCaseId(myCaseId,&myResp)
+	if err != nil{
+		Error("ResultController ResultListByCaseId   result.ResultByCaseId error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,""),myResp,c.Ctx)
 	return
 }

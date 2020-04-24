@@ -33,12 +33,14 @@ create table `project_people`(
 )engine=innodb,charset=utf8mb4;
 
 
+drop table test_case;
+
 create table `test_case`(
     `id` int AUTO_INCREMENT comment '测试用例Id',
     `projectId` int  comment '项目Id',
     `title` varchar(30) comment '测试用例标题',
     `module_path` varchar(30) comment '被测试对象模块路径',
-    `assign` bigint(12) comment '指派给测试人员',
+    `assigned` bigint(12) comment '指派给测试人员',
     `priority` int comment '优先级',
     `type_method` varchar(20) comment '类型方法',
     `type_plan` varchar(20) comment '测试计划',
@@ -48,6 +50,8 @@ create table `test_case`(
 )engine=innodb,charset=utf8mb4;
 
 
+drop table test_result;
+
 create table `test_result`(
      `id` int AUTO_INCREMENT comment '测试用例Id',
      `case_id` int unique comment 'case_id',
@@ -56,13 +60,18 @@ create table `test_result`(
      `assigned` bigint(12) comment '指派给开发人员',
      `test_env` varchar(30) comment '测试运行环境',
      `test_step` varchar(200) comment '步骤',
-     primary key (`id`)
+     primary key (`id`),
+     index(`projectId`)
 )engine=innodb,charset=utf8mb4;
 
+
+drop table bug_info;
 
 create table `bug_info`(
      `id` int AUTO_INCREMENT comment 'bugId',
      `bug_title` varchar(30) comment 'bug标题',
+     `case_id` int unique comment 'case_id',
+     `projectId` int  comment '项目Id',
      `module_path` varchar(30) comment '被测试对象模块路径',
      `assigned` bigint(12) comment '指派给开发人员',
      `severity` int comment '严重程度',
@@ -70,15 +79,22 @@ create table `bug_info`(
      `type` varchar(20) comment '类型',
      `find_way` varchar(100) comment '如何发现',
      `test_env` varchar(30) comment '测试运行环境',
-     primary key (`id`)
+     primary key (`id`),
+     index(`projectId`)
 )engine=innodb,charset=utf8mb4;
 
 
+
+drop table bug_solution;
+
 create table `bug_solution`(
     `id` int AUTO_INCREMENT comment 'bugId',
-    `Solver` bigint(12) comment '解决者',
-    `Solver_time` bigint(12) comment '解决日期',
-    `Solution` varchar(200) comment '解决方案',
-    primary key (`id`)
+    `case_id` int unique comment 'case_id',
+    `projectId` int comment '项目Id',
+    `solver` bigint(12) comment '解决者',
+    `solve_time` bigint(12) comment '解决日期',
+    `solution` varchar(200) comment '解决方案',
+    primary key (`id`),
+    index(`projectId`)
 )engine=innodb,charset=utf8mb4;
 

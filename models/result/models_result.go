@@ -57,12 +57,12 @@ func CreateResult(myReq StruResultReq)error{
 }
 
 
-func ResultList(myResp *StruResultListResp)error{
-	ExecSql := "select test_result.* from test_result inner join test_case on test_result.case_id=test_case.id"
+func ResultList(assign int64,myResp *StruResultListResp)error{
+	ExecSql := "select *from test_result where assigned=?"
 	Info("ResultList ExecSql =",ExecSql)
 
 
-	rows,err := database.GetDB().Query(ExecSql)
+	rows,err := database.GetDB().Query(ExecSql,assign)
 	if err != nil{
 		Error("ResultList database.GetDB().Query error:",err.Error())
 		return err
@@ -76,6 +76,18 @@ func ResultList(myResp *StruResultListResp)error{
 			return err
 		}
 		myResp.Info = append(myResp.Info,tmp)
+	}
+	return nil
+}
+
+func ResultByCaseId(CaseId int64,myResp *StruResultResp)error{
+	SelectSql := "select *from test_result where case_id=?"
+	Info("ResultByCaseId SelectSql =",SelectSql)
+
+	err := database.GetDB().QueryRow(SelectSql,CaseId).Scan(myResp)
+	if err != nil{
+		Error("ResultByCaseId database.GetDB().QueryRow error:",err.Error())
+		return err
 	}
 	return nil
 }

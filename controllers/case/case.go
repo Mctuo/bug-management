@@ -73,3 +73,30 @@ func (c *CaseController)AssignList(){
 	models.HandleError(models.Success,models.GetErrMsg(models.Success,"ok"),myResp.ListInfo,c.Ctx)
 	return
 }
+
+
+func (c *CaseController)GetCaseId(){
+	models.PrintClientInfo(c.Ctx)
+
+	CaseId,err := c.GetInt64("caseId")
+	if err != nil{
+		Error("GetCaseId CaseId error:",err.Error())
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+		return
+	}
+	if CaseId < 1 {
+		Error("GetCaseId CaseId error,CaseId=",CaseId)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"caseId error"),nil,c.Ctx)
+		return
+	}
+
+	var myResp _case.StruCreateCaseReq
+	err = _case.ListByCaseId(CaseId,&myResp)
+	if err != nil{
+		Error("CaseController  _case.ListByCaseId error:",err.Error())
+		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
+		return
+	}
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,"ok"),myResp,c.Ctx)
+	return
+}

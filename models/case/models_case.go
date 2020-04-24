@@ -73,3 +73,15 @@ func AssignList(assign int64, myResp *StruAssignResp)error{
 	}
 	return nil
 }
+
+func ListByCaseId(caseId int64,myResp *StruCreateCaseReq)error{
+	selectSql := "select *from test_case where case_id =?"
+
+	Info("ListByCaseId selectSql=",selectSql)
+	err := database.GetDB().QueryRow(selectSql,caseId).Scan(myResp)
+	if err != nil{
+		Error("ListByCaseId database.GetDB().QueryRow error:",err.Error())
+		return err
+	}
+	return nil
+}

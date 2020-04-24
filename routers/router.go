@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"bug-management/controllers/bug"
 	_case "bug-management/controllers/case"
 	"bug-management/controllers/health"
 	"bug-management/controllers/project"
@@ -54,9 +55,25 @@ func init() {
 
 	beego.Router("bug/api/case/assign/list",&_case.CaseController{},"GET:AssignList")
 
+	beego.Router("/bug/api/case/listbycaseid",&_case.CaseController{},"GET:GetCaseId")
+
+	//4.result
 	beego.Router("/bug/api/result/create",&result.ResultController{},"POST:CreateResult")
 
-	beego.Router("/bug/api/result/list",&result.ResultController{},"GET:ResultList")
+	beego.Router("/bug/api/result/listbyassign",&result.ResultController{},"GET:ResultList")
+
+	beego.Router("/bug/api/result/listbycaseid",&result.ResultController{},"GET:ResultListByCaseId")
+
+	//bug_info
+	beego.Router("/bug/api/buginfo/create",&bug.BugController{},"POST:BugCreate")
+
+	beego.Router("/bug/api/buginfo/listbytitle",&bug.BugController{},"GET:BugInfoByTitle")
+
+	beego.Router("/bug/api/buginfo/listbyassign",&bug.BugController{},"GET:AssignBug")
 
 
+	//bug_solution
+	beego.Router("/bug/api/bugsolve/create",&bug.BugController{},"POST:CreateBugSolution")
+
+	beego.Router("/bug/api/bugsolve/list",&bug.BugController{},"GET:GetSolutionList")
 }
