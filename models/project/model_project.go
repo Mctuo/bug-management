@@ -46,11 +46,11 @@ type StruProjectListResp struct {
 	ListInfo []StruProject `json:"listInfo"`
 }
 
-func ProjectDesc(account ,projectId int64, myResp *StruProject)error{
-	sqlStr := "select* from project where account=? and id= ?"
+func ProjectDesc(projectId int64, myResp *StruProject)error{
+	sqlStr := "select* from project where  id= ?"
 	Info("ProjectDesc Query sqlStr=",sqlStr)
-	Info("ProjectDesc Query value=",account,projectId)
-	rows,err := database.GetDB().Query(sqlStr,account,projectId)
+	Info("ProjectDesc Query value=",projectId)
+	rows,err := database.GetDB().Query(sqlStr,projectId)
 	if err != nil{
 		Error("ProjectDesc database.GetDB().Query error:",err.Error())
 		return err

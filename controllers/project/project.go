@@ -15,17 +15,17 @@ type ProjectController struct {
 func (c *ProjectController)ProjectInfo(){
 	models.PrintClientInfo(c.Ctx)
 
-	myAccount,err := c.GetInt64("account")
-	if err != nil{
-		Error("PersonController ProjectInfo myAccount error:",err.Error())
-		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
-		return
-	}
-	if myAccount <= 0{
-		Error("ProjectController ProjectInfo error:account=",myAccount)
-		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"账号错误"),nil,c.Ctx)
-		return
-	}
+	//myAccount,err := c.GetInt64("account")
+	//if err != nil{
+	//	Error("PersonController ProjectInfo myAccount error:",err.Error())
+	//	models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,err.Error()),nil,c.Ctx)
+	//	return
+	//}
+	//if myAccount <= 0{
+	//	Error("ProjectController ProjectInfo error:account=",myAccount)
+	//	models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"账号错误"),nil,c.Ctx)
+	//	return
+	//}
 	myProjectId,err := c.GetInt64("projectId")
 	if err != nil{
 		Error("PersonController ProjectInfo myProjectId error:",err.Error())
@@ -39,7 +39,7 @@ func (c *ProjectController)ProjectInfo(){
 	}
 	var myResp pro.StruProject
 
-	err = pro.ProjectDesc(myAccount,myProjectId,&myResp)
+	err = pro.ProjectDesc(myProjectId,&myResp)
 	if err != nil{
 		Error("PersonController project.ProjectList error:",err.Error())
 		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)

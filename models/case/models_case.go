@@ -28,7 +28,7 @@ var(
 		"projectId",
 		"title",
 		"module_path",
-		"assign",
+		"assigned",
 		"priority",
 		"type_method",
 		"type_plan",
@@ -52,7 +52,7 @@ func CreateCase(myReq StruCreateCaseReq)error{
 }
 
 func AssignList(assign int64, myResp *StruAssignResp)error{
-	selectSql := "select *from test_case where assign = ?"
+	selectSql := "select *from test_case where assigned = ?"
 	Info("models AssignList selectSql=",selectSql)
 	Info("models AssignList selectSql value=",assign)
 
@@ -75,10 +75,10 @@ func AssignList(assign int64, myResp *StruAssignResp)error{
 }
 
 func ListByCaseId(caseId int64,myResp *StruCreateCaseReq)error{
-	selectSql := "select *from test_case where case_id =?"
+	selectSql := "select *from test_case where id =?"
 
 	Info("ListByCaseId selectSql=",selectSql)
-	err := database.GetDB().QueryRow(selectSql,caseId).Scan(myResp)
+	err := database.GetDB().QueryRow(selectSql,caseId).Scan(&myResp.Id,&myResp.ProjectId,&myResp.Title,&myResp.ModulePath,&myResp.Assign,&myResp.Priority,&myResp.TypeMethod,&myResp.TypePlan,&myResp.Creator)
 	if err != nil{
 		Error("ListByCaseId database.GetDB().QueryRow error:",err.Error())
 		return err

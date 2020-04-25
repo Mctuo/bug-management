@@ -1,5 +1,7 @@
 use bug_management
 
+drop table person_info;
+
 create table `person_info`(
     `id` int AUTO_INCREMENT,
     `name` varchar(10) ,
@@ -13,6 +15,8 @@ create table `person_info`(
 )engine=innodb,charset=utf8mb4;
 
 
+drop table project;
+
 create table `project`(
     `id` int AUTO_INCREMENT comment '项目编号',
     `project_name` varchar(30) comment '项目名称',
@@ -25,6 +29,8 @@ create table `project`(
     primary key (`id`),
 	index  (`account`)
 )engine=innodb,charset=utf8mb4;
+
+drop table project_people
 
 create table `project_people`(
      `id` int AUTO_INCREMENT comment '项目编号',
@@ -46,7 +52,8 @@ create table `test_case`(
     `type_plan` varchar(20) comment '测试计划',
     `creator` bigint(12) comment '创建人员',
      primary key (`id`),
-     index (`creator`)
+     index (`creator`),
+     index (`title`)
 )engine=innodb,charset=utf8mb4;
 
 
@@ -61,7 +68,9 @@ create table `test_result`(
      `test_env` varchar(30) comment '测试运行环境',
      `test_step` varchar(200) comment '步骤',
      primary key (`id`),
-     index(`projectId`)
+     index(`projectId`),
+     index(`case_id`),
+     index(`assigned`)
 )engine=innodb,charset=utf8mb4;
 
 
@@ -80,7 +89,10 @@ create table `bug_info`(
      `find_way` varchar(100) comment '如何发现',
      `test_env` varchar(30) comment '测试运行环境',
      primary key (`id`),
-     index(`projectId`)
+     index(`projectId`),
+     index(`bug_title`),
+     index(`assigned`)
+
 )engine=innodb,charset=utf8mb4;
 
 
@@ -89,12 +101,13 @@ drop table bug_solution;
 
 create table `bug_solution`(
     `id` int AUTO_INCREMENT comment 'bugId',
-    `case_id` int unique comment 'case_id',
+    `case_id` int unique  comment 'case_id',
     `projectId` int comment '项目Id',
     `solver` bigint(12) comment '解决者',
     `solve_time` bigint(12) comment '解决日期',
     `solution` varchar(200) comment '解决方案',
     primary key (`id`),
-    index(`projectId`)
+    index(`projectId`),
+    index(`case_id`)
 )engine=innodb,charset=utf8mb4;
 

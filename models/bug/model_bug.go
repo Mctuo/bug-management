@@ -35,6 +35,7 @@ type StruBugInfoRespData struct {
 
 type StruBugSolutionReq struct {
 	ProjectId int64	`json:"projectId"`
+	CaseId	int64	`json:"caseId"`
 	Solver int64	`json:"solver"`
 	SolveTime int64	`json:"solve_time"`
 	Solution string	`json:"solution"`
@@ -42,6 +43,7 @@ type StruBugSolutionReq struct {
 
 type StruBugSolutionData struct {
 	BugId int64	`json:"bugId"`
+	CaseId	int64	`json:"caseId"`
 	ProjectId int64	`json:"projectId"`
 	Solver int64	`json:"solver"`
 	SolveTime int64	`json:"solve_time"`
@@ -108,7 +110,10 @@ func GetBugInfo(title string,myResp *StruBugInfoResp)error{
 func GetBugInfoByAssign(assign int64,myResp *StruBugInfoRespData)error{
 	selectSql := "select *from bug_info where assigned =?"
 
-	err := database.GetDB().QueryRow(selectSql,assign).Scan(myResp)
+	err := database.GetDB().QueryRow(selectSql,assign).Scan(&myResp.BugId,
+		&myResp.BugTitle,&myResp.CaseId,&myResp.ProjectId,&myResp.ModulePath,
+		&myResp.Assigned,&myResp.Severity,&myResp.Priority,&myResp.Type,&myResp.FindWay,
+		&myResp.TestEnv)
 	if err != nil{
 		Error("GetBugInfoByAssign database.GetDB().QueryRow error:",err.Error())
 		return err
@@ -118,11 +123,11 @@ func GetBugInfoByAssign(assign int64,myResp *StruBugInfoRespData)error{
 
 
 func CreateBugSolution(myReq StruBugSolutionReq)error{
-	InsertSql := "insert into bug_solution(projectId,solver,solve_time,solution)values(?,?,?,?)"
+	InsertSql := "insert into bug_solution(projectId,case_id,solver,solve_time,solution)values(?,?,?,?,?)"
 	Info("CreateBugSolution InsertSql =",InsertSql)
 	Info("InsertSql InsertSql value =",myReq)
 
-	_,err := database.GetDB().Exec(InsertSql,myReq.ProjectId,myReq.Solver,myReq.SolveTime,myReq.Solution)
+	_,err := database.GetDB().Exec(InsertSql,myReq.ProjectId,myReq.CaseId,myReq.Solver,myReq.SolveTime,myReq.Solution)
 	if err != nil{
 		Error("CreateBugSolution database.GetDB().Exec error:",err.Error())
 		return err
@@ -151,7 +156,7 @@ func GetSolutionList(projectId int64,myResp *StruBugSolutionResp)error{
 	}
 	for rows.Next(){
 		var tmp StruBugSolutionData
-		err = rows.Scan(&tmp.BugId,&tmp.ProjectId,&tmp.Solver,&tmp.SolveTime,&tmp.Solution)
+		err = rows.Scan(&tmp.BugId,&tmp.CaseId,&tmp.ProjectId,&tmp.Solver,&tmp.SolveTime,&tmp.Solution)
 		if err != nil{
 			Error("GetSolutionList rows.Scan error:",err.Error())
 			return err

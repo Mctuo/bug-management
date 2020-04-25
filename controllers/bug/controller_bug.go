@@ -55,7 +55,7 @@ func (c *BugController)BugInfoByTitle(){
 	var myResp bug.StruBugInfoResp
 	err := bug.GetBugInfo(myTitle,&myResp)
 	if err != nil{
-		Error("BugController BugInfo  bug.BugInfo error:",err.Error())
+		Error("BugController BugInfoByTitle  bug.BugInfo error:",err.Error())
 		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
 		return
 	}
@@ -101,6 +101,11 @@ func (c *BugController)CreateBugSolution(){
 		return
 	}
 
+	if myReq.CaseId < 1{
+		Error("CreateBugSolution CaseId=",myReq.CaseId)
+		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"CaseId error"),nil,c.Ctx)
+		return
+	}
 	err = bug.CreateBugSolution(myReq)
 	if err != nil{
 		Error("CreateBugSolution BugInfo  bug.CreateBugSolution error:",err.Error())
