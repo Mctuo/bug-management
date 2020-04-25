@@ -78,14 +78,14 @@ func(c *BugController)AssignBug(){
 		models.HandleError(models.ErrArg,models.GetErrMsg(models.ErrArg,"assigned error"),nil,c.Ctx)
 		return
 	}
-	var myResp bug.StruBugInfoRespData
+	var myResp bug.StruBugInfoResp
 	err = bug.GetBugInfoByAssign(assigned,&myResp)
 	if err != nil{
 		Error("BugController BugInfo  bug.BugInfo error:",err.Error())
 		models.HandleError(models.ErrSvr,models.GetErrMsg(models.ErrSvr,err.Error()),nil,c.Ctx)
 		return
 	}
-	models.HandleError(models.Success,models.GetErrMsg(models.Success,"ok"),myResp,c.Ctx)
+	models.HandleError(models.Success,models.GetErrMsg(models.Success,"ok"),myResp.Info,c.Ctx)
 	return
 
 }

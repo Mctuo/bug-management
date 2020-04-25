@@ -107,16 +107,23 @@ func GetBugInfo(title string,myResp *StruBugInfoResp)error{
 
 
 
-func GetBugInfoByAssign(assign int64,myResp *StruBugInfoRespData)error{
+func GetBugInfoByAssign(assign int64,myResp *StruBugInfoResp)error{
 	selectSql := "select *from bug_info where assigned =?"
 
-	err := database.GetDB().QueryRow(selectSql,assign).Scan(&myResp.BugId,
-		&myResp.BugTitle,&myResp.CaseId,&myResp.ProjectId,&myResp.ModulePath,
-		&myResp.Assigned,&myResp.Severity,&myResp.Priority,&myResp.Type,&myResp.FindWay,
-		&myResp.TestEnv)
+	rows,err :=database.GetDB().Query(selectSql,assign)
 	if err != nil{
-		Error("GetBugInfoByAssign database.GetDB().QueryRow error:",err.Error())
+		Error("GetBugInfoByAssign database.GetDB().Query error:",err.Error())
 		return err
+	}
+	for rows.Next(){
+		var tmp StruBugInfoRespData
+		err = rows.Scan(&tmp.BugId,&tmp.BugTitle,&tmp.CaseId,&tmp.ProjectId,&tmp.ModulePath,
+			&tmp.Assigned,&tmp.Severity,&tmp.Priority,&tmp.Type,&tmp.FindWay,&tmp.TestEnv)
+		if err != nil{
+			Error("GetBugInfoByAssign rows.Next() error:",err.Error())
+			return err
+		}
+		myResp.Info = append(myResp.Info,tmp)
 	}
 	return nil
 }

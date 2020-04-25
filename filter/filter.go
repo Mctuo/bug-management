@@ -4,6 +4,7 @@ import (
 	"bug-management/conf"
 	. "common/logs"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"io/ioutil"
@@ -26,6 +27,7 @@ func SsoFilter()beego.FilterFunc{
 
 		if autoOn == 1{
 			SsoToken := ctx.GetCookie("SsoToken")
+
 			if len(SsoToken) < 1{
 				ctx.ResponseWriter.WriteHeader(401)
 				return
@@ -41,11 +43,15 @@ func SsoFilter()beego.FilterFunc{
 
 func CheckToken(SsoToken string)bool{
 	client := http.Client{Timeout:5*time.Second}
-	myReq,err := http.NewRequest("GET",conf.IsLoginAddr,nil)
+
+	addr := fmt.Sprintf("%s",conf.IsLoginAddr)
+	myReq,err := http.NewRequest("GET",addr,nil)
 	if err != nil{
-		Error("SsoToken CheckToken http.NewRequest error:",err.Error())
+		Error("CheckToken http.NewRequest error:",err.Error())
 		return false
 	}
+	myReq.Header.Set("cookie",fmt.Sprintf("SsoToken=%s",SsoToken))
+
 	Resp,err :=client.Do(myReq)
 	if err != nil{
 		Error("SsoToken CheckToken client.Do error:",err.Error())
